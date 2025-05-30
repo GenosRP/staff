@@ -2,21 +2,87 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Panel de Staff GENOS</title>
+  <title>Panel Staff | GENOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    button.logout {
+      background: #c0392b;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button.logout:hover {
+      background: #e74c3c;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 1rem;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #1f1f1f;
+      font-weight: 600;
+    }
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 900px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Panel de Staff GENOS</h1>
+  <header>
+    <h1>Panel de Staff GENOS</h1>
+    <button class="logout">Cerrar sesión</button>
+  </header>
+
   <nav>
     <ul>
-      <li><a href="normas.html">Normas Generales</a></li>
+      <li><a href="normas.html">📜 Normas Generales</a></li>
       <li><a href="sanciones.html">⚠️ Sanciones</a></li>
-      <li><a href="usoadmin.html">🔒 Uso Administrativo</a></li>
+      <li><a href="uso-administrativo.html">🔒 Uso Administrativo</a></li>
       <li><a href="conducta.html">🤝 Conducta</a></li>
       <li><a href="tecnico.html">🛠️ Técnico</a></li>
-      <li><a href="calidadrol.html">🎭 Calidad Rol</a></li>
+      <li><a href="calidad-rol.html">🎭 Calidad Rol</a></li>
     </ul>
   </nav>
+
+  <main>
+    <p>Bienvenido al panel de staff. Selecciona una guía del menú para comenzar.</p>
+  </main>
+
+  <script>
+    // Controla acceso: si no hay usuario logueado, redirige a login
+    const loggedUser = localStorage.getItem('genosUser');
+    if(!loggedUser) {
+      window.location.href = 'index.html';
+    }
+
+    document.querySelector('.logout').addEventListener('click', () => {
+      localStorage.removeItem('genosUser');
+      window.location.href = 'index.html';
+    });
+  </script>
 </body>
 </html>
