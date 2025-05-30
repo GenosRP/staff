@@ -17,7 +17,7 @@
     const pass = document.getElementById('password').value;
 
     if (users[user] && users[user] === pass) {
-      fetch('TU_URL_DE_APPS_SCRIPT', {
+      fetch('https://script.google.com/macros/s/AKfycbzc5ZWYSr8SzI6LKZy3D0Gw1qGkVe1pVa8JiwlKDcb4aZoD1Pe-oz0WEHbNbhl6Bzoa8Q/exec', {
         method: 'POST',
         body: JSON.stringify({ usuario: user }),
         headers: { 'Content-Type': 'application/json' }
