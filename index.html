@@ -1,40 +1,19 @@
-<form id="login-form">
-  <input id="username" required placeholder="Usuario" />
-  <input id="password" type="password" required placeholder="Contraseña" />
-  <button type="submit">Entrar</button>
-  <p id="error-msg"></p>
-</form>
+document.getElementById('login-form').addEventListener('submit', function(e) {
+  e.preventDefault();
 
-<script>
-  const users = {
-    admin: "genos123",
-    narrador: "rol2025"
-  };
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value;
 
-  document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value;
-
-    if (users[user] && users[user] === pass) {
-      fetch('https://script.google.com/macros/s/AKfycbzc5ZWYSr8SzI6LKZy3D0Gw1qGkVe1pVa8JiwlKDcb4aZoD1Pe-oz0WEHbNbhl6Bzoa8Q/exec', {
-        method: 'POST',
-        body: JSON.stringify({ usuario: user }),
-        headers: { 'Content-Type': 'application/json' }
-      })
+  if(users[user] && users[user] === pass) {
+    // Registro en Google Sheets
+    fetch('https://script.google.com/macros/s/AKfycby5s9X_UyPu2xhxHtlj-w9tmX7pKMLPVvICEhRQE6Yt-SOYVS2xxSbokfLeCO_isdNDgQ/exec' + encodeURIComponent(user))
       .then(response => response.text())
-      .then(text => {
-        if (text === 'Success') {
-          window.location.href = 'dashboard.html';
-        } else {
-          document.getElementById('error-msg').textContent = "Error al registrar el acceso.";
-        }
-      })
-      .catch(() => {
-        document.getElementById('error-msg').textContent = "No se pudo conectar con el servidor.";
-      });
-    } else {
-      document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
-    }
-  });
-</script>
+      .then(data => console.log(data))
+      .catch(err => console.error('Error al registrar el acceso:', err));
+
+    localStorage.setItem('genosUser', user);
+    window.location.href = 'dashboard.html';
+  } else {
+    document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
+  }
+});
