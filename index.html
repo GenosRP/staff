@@ -77,7 +77,7 @@
 
       if(users[user] && users[user] === pass) {
         // Enviar el usuario al Google Apps Script para registrar acceso
-        fetch('https://script.google.com/macros/s/AKfycby5s9X_UyPu2xhxHtlj-w9tmX7pKMLPVvICEhRQE6Yt-SOYVS2xxSbokfLeCO_isdNDgQ/exec' + encodeURIComponent(user))
+        fetch('https://script.google.com/macros/s/AKfycbxkPlrKJLoRmc8wluARZZgPVgV6NkLNO1AuwdYqnFPoXPYaqSbBhmjJ6UcDynqdkkKL9Q/exec' + encodeURIComponent(user))
           .then(response => response.text())
           .then(data => {
             // Aquí puedes mostrar éxito o continuar
