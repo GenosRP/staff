@@ -1,19 +1,93 @@
-document.getElementById('login-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Acceso Staff | GENOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.6rem 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      background: #1f1f1f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    button:hover {
+      background: #444;
+    }
+    .error {
+      color: red;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>🔐 Acceso al Panel de Staff GENOS</h1>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Usuario" required autocomplete="off" />
+      <input type="password" id="password" placeholder="Contraseña" required autocomplete="off" />
+      <button type="submit">Entrar</button>
+      <p id="error-msg" class="error"></p>
+    </form>
+  </div>
 
-  const user = document.getElementById('username').value.trim();
-  const pass = document.getElementById('password').value;
+  <script>
+    const users = {
+      admin: "genos123",
+      narrador: "rol2025"
+      // Añade más usuarios si quieres
+    };
 
-  if(users[user] && users[user] === pass) {
-    // Registro en Google Sheets
-    fetch('https://script.google.com/macros/s/AKfycby5s9X_UyPu2xhxHtlj-w9tmX7pKMLPVvICEhRQE6Yt-SOYVS2xxSbokfLeCO_isdNDgQ/exec' + encodeURIComponent(user))
-      .then(response => response.text())
-      .then(data => console.log(data))
-      .catch(err => console.error('Error al registrar el acceso:', err));
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    localStorage.setItem('genosUser', user);
-    window.location.href = 'dashboard.html';
-  } else {
-    document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
-  }
-});
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if(users[user] && users[user] === pass) {
+        // Registro de acceso en Google Sheets vía Apps Script
+        fetch('https://script.google.com/macros/s/AKfycby5s9X_UyPu2xhxHtlj-w9tmX7pKMLPVvICEhRQE6Yt-SOYVS2xxSbokfLeCO_isdNDgQ/exec' + encodeURIComponent(user))
+          .then(response => response.text())
+          .then(data => console.log('Registro:', data))
+          .catch(err => console.error('Error al registrar el acceso:', err));
+
+        localStorage.setItem('genosUser', user);
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
+      }
+    });
+  </script>
+</body>
+</html>
