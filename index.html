@@ -66,7 +66,7 @@
     const users = {
       admin: "genos123",
       narrador: "rol2025"
-      // Añade más usuarios si quieres
+      // Puedes añadir más usuarios aquí
     };
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -76,14 +76,18 @@
       const pass = document.getElementById('password').value;
 
       if(users[user] && users[user] === pass) {
-        // Registro de acceso en Google Sheets vía Apps Script
+        // Enviar el usuario al Google Apps Script para registrar acceso
         fetch('https://script.google.com/macros/s/AKfycby5s9X_UyPu2xhxHtlj-w9tmX7pKMLPVvICEhRQE6Yt-SOYVS2xxSbokfLeCO_isdNDgQ/exec' + encodeURIComponent(user))
           .then(response => response.text())
-          .then(data => console.log('Registro:', data))
-          .catch(err => console.error('Error al registrar el acceso:', err));
-
-        localStorage.setItem('genosUser', user);
-        window.location.href = 'dashboard.html';
+          .then(data => {
+            // Aquí puedes mostrar éxito o continuar
+            localStorage.setItem('genosUser', user);
+            window.location.href = 'dashboard.html';
+          })
+          .catch(error => {
+            console.error('Error al registrar acceso:', error);
+            document.getElementById('error-msg').textContent = "Error al registrar el acceso.";
+          });
       } else {
         document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
       }
