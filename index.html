@@ -1,70 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Acceso Staff | GENOS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
-  <style>
-    /* Tus estilos */
-    body { font-family: 'Montserrat', sans-serif; background: #f7f7f7; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;}
-    .login-container {background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 320px; text-align: center;}
-    input {width: 100%; padding: 0.6rem; margin: 0.6rem 0; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;}
-    button {width: 100%; padding: 0.6rem; background: #1f1f1f; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1rem;}
-    button:hover {background: #444;}
-    .error {color: red; margin-top: 1rem; font-weight: bold;}
-  </style>
-</head>
-<body>
-  <div class="login-container">
-    <h1>🔐 Acceso al Panel de Staff GENOS</h1>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Usuario" required autocomplete="off" />
-      <input type="password" id="password" placeholder="Contraseña" required autocomplete="off" />
-      <button type="submit">Entrar</button>
-      <p id="error-msg" class="error"></p>
-    </form>
-  </div>
+<form id="login-form">
+  <input id="username" required placeholder="Usuario" />
+  <input id="password" type="password" required placeholder="Contraseña" />
+  <button type="submit">Entrar</button>
+  <p id="error-msg"></p>
+</form>
 
-  <script>
-    const users = {
-      admin: "genos123",
-      narrador: "rol2025"
-      // Puedes añadir más usuarios aquí
-    };
+<script>
+  const users = {
+    admin: "genos123",
+    narrador: "rol2025"
+  };
 
-    const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzc5ZWYSr8SzI6LKZy3D0Gw1qGkVe1pVa8JiwlKDcb4aZoD1Pe-oz0WEHbNbhl6Bzoa8Q/exec'; // Cambia esto por tu URL
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value;
 
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value;
-
-      if(users[user] && users[user] === pass) {
-        // Si login OK, mandamos usuario a Apps Script con fetch POST
-        fetch(googleScriptURL, {
-          method: 'POST',
-          body: JSON.stringify({ usuario: user }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(res => res.text())
-        .then(resText => {
-          console.log('Respuesta de Apps Script:', resText);
-          // Ahora sí, redirigimos al dashboard
-          localStorage.setItem('genosUser', user);
+    if (users[user] && users[user] === pass) {
+      fetch('TU_URL_DE_APPS_SCRIPT', {
+        method: 'POST',
+        body: JSON.stringify({ usuario: user }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.text())
+      .then(text => {
+        if (text === 'Success') {
           window.location.href = 'dashboard.html';
-        })
-        .catch(err => {
-          console.error('Error al enviar login:', err);
+        } else {
           document.getElementById('error-msg').textContent = "Error al registrar el acceso.";
-        });
-      } else {
-        document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
-      }
-    });
-  </script>
-</body>
-</html>
+        }
+      })
+      .catch(() => {
+        document.getElementById('error-msg').textContent = "No se pudo conectar con el servidor.";
+      });
+    } else {
+      document.getElementById('error-msg').textContent = "Usuario o contraseña incorrectos.";
+    }
+  });
+</script>
